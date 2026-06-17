@@ -19,10 +19,10 @@
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #f0f4f8;
+            --correct-green: #10b981;
         }
  
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
- 
         body { font-family: 'Century Gothic', 'Quicksand', sans-serif; background: var(--space-bg); color: var(--text-main); margin: 0; padding: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative; }
  
         #custom-bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0; transition: opacity 1s ease; pointer-events: none; }
@@ -34,19 +34,12 @@
         .planet-2 { width: 80px; height: 80px; background: radial-gradient(circle at 30% 30%, #4facfe 0%, #00f2fe 100%); bottom: 20%; left: -100px; animation: orbitRight 70s linear infinite; }
         .planet-3 { width: 200px; height: 200px; background: radial-gradient(circle at 30% 30%, #f6d365 0%, #fda085 100%); top: -50px; left: 30%; animation: floatSlow 40s ease-in-out infinite alternate; opacity: 0.4; }
 
-        @keyframes orbitLeft { from { transform: translateX(0) rotate(0deg); } to { transform: translateX(-120vw) rotate(-360deg); } }
-        @keyframes orbitRight { from { transform: translateX(0) rotate(0deg); } to { transform: translateX(120vw) rotate(360deg); } }
-        @keyframes floatSlow { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(50px) rotate(15deg); } }
-
         .rocket { position: fixed; z-index: 2; pointer-events: none; opacity: 0.8; }
         .rocket-1 { font-size: 4rem; bottom: -100px; left: 5%; animation: flyUpRight 28s linear infinite; }
         .rocket-2 { font-size: 2.5rem; bottom: -50px; right: 15%; animation: flyUpLeft 35s linear infinite 10s; opacity: 0.6; filter: hue-rotate(90deg); }
-        .rocket-3 { font-size: 1.5rem; top: 40%; left: -50px; animation: flyHorizontal 20s linear infinite 5s; opacity: 0.4; filter: hue-rotate(180deg); }
         @keyframes flyUpRight { 0% { transform: translate(0, 0) rotate(45deg); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translate(110vw, -120vh) rotate(45deg); opacity: 0; } }
         @keyframes flyUpLeft { 0% { transform: translate(0, 0) rotate(-45deg); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translate(-110vw, -120vh) rotate(-45deg); opacity: 0; } }
-        @keyframes flyHorizontal { 0% { transform: translateX(0) rotate(90deg); opacity: 0; } 10% { opacity: 0.4; } 90% { opacity: 0.4; } 100% { transform: translateX(110vw) rotate(90deg); opacity: 0; } }
 
- 
         .app-container { width: 92%; max-width: 800px; background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 28px; padding: 45px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5); z-index: 10; position: relative; max-height: 90vh; overflow-y: auto; }
         .app-container::-webkit-scrollbar { width: 8px; }
         .app-container::-webkit-scrollbar-thumb { background: var(--glow-cyan); border-radius: 4px; }
@@ -57,6 +50,7 @@
         h1 { font-size: 2.5rem; letter-spacing: 3px; text-align: center; margin-top: 0; background: linear-gradient(to right, #fff, var(--glow-cyan), var(--glowing-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; line-height: 1.2; }
         h2 { font-size: 1.5rem; color: var(--glowing-gold); text-align: center; margin-bottom: 25px; }
         p { font-size: 1.2rem; line-height: 1.6; color: #cbd5e1; }
+        
         .question-wrapper { background: rgba(0, 0, 0, 0.4); padding: 25px; border-radius: 18px; margin-bottom: 25px; border-left: 5px solid var(--glow-cyan); }
         .question-title { font-weight: bold; font-size: 1.3rem; margin-bottom: 18px; color: #fff; }
  
@@ -67,7 +61,7 @@
         .radio-option input:checked ~ .checkmark { background-color: var(--glow-cyan); box-shadow: 0 0 12px var(--glow-cyan); border-color: var(--glow-cyan); }
         .radio-option input:checked ~ .checkmark::after { content: ""; position: absolute; display: block; top: 6px; left: 6px; width: 8px; height: 8px; border-radius: 50%; background: white; }
  
-        input[type="text"], input[type="password"], textarea, select, input[type="number"] { width: 100%; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--glass-border); border-radius: 14px; padding: 18px; color: #fff; font-size: 1.2rem; box-sizing: border-box; transition: all 0.3s; margin-top: 5px; outline: none; font-family: inherit; }
+        input[type="text"], input[type="password"], textarea, select, input[type="number"], input[type="url"] { width: 100%; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--glass-border); border-radius: 14px; padding: 15px; color: #fff; font-size: 1.1rem; box-sizing: border-box; transition: all 0.3s; margin-top: 5px; outline: none; font-family: inherit; }
         input:focus, textarea:focus, select:focus { border-color: var(--glow-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); }
         select option { background: #1e293b; color: white; }
 
@@ -87,36 +81,40 @@
  
         .error-banner { background: rgba(239, 71, 58, 0.3); border: 2px solid var(--neon-coral); color: #ffcccc; padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: center; font-weight: bold; font-size: 1.2rem; }
  
-        /* FIXED: background-size is now 'contain' so it doesn't stretch the original image */
         .final-certificate-wrapper { position: relative; width: 100%; padding-top: 70.7%; background-color: #fff; background-size: contain; background-position: center; background-repeat: no-repeat; box-shadow: 0 15px 35px rgba(0,0,0,0.6); overflow: hidden; }
         .cert-name-display { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; text-align: center; text-shadow: none !important; }
  
-        /* Settings Modal */
+        /* Settings Modal & Organized Tabs */
         .settings-btn { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: rgba(0,0,0,0.6); border: 2px solid var(--glass-border); border-radius: 50%; width: 50px; height: 50px; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; cursor: pointer; backdrop-filter: blur(5px); transition: 0.3s; color: white; }
         .settings-btn:hover { background: var(--glow-cyan); color: #000; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 200; display: flex; justify-content: center; align-items: center; }
-        .modal-content { background: #1e293b; width: 95%; max-width: 900px; max-height: 95vh; overflow-y: auto; border-radius: 20px; padding: 30px; border: 2px solid var(--glow-cyan); position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #ff5e62; cursor: pointer; font-weight: bold; }
- 
-        /* Builder Styles */
-        .builder-card { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .builder-card header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .builder-card input, .builder-card select { padding: 10px; font-size: 1rem; margin-bottom: 10px; }
-        .builder-row { display: flex; gap: 10px; }
-        .builder-row input { flex: 1; }
-        .btn-small { padding: 8px 12px; font-size: 0.9rem; }
         
-        /* FIXED: background-size is now 'contain' here too */
-        .preview-box { position: relative; width: 100%; max-width: 600px; margin: 0 auto; padding-top: 70.7%; background-color: #e2e8f0; background-size: contain; background-position: center; background-repeat: no-repeat; cursor: crosshair; overflow: hidden; border: 2px dashed #00f2fe; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 200; display: flex; justify-content: center; align-items: center; }
+        .modal-content { background: #1e293b; width: 95%; max-width: 900px; max-height: 95vh; overflow-y: auto; border-radius: 20px; padding: 30px; border: 2px solid var(--glow-cyan); position: relative; display: flex; flex-direction: column; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #ff5e62; cursor: pointer; font-weight: bold; z-index: 10; }
+        
+        .tab-buttons { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--glass-border); padding-bottom: 10px; }
+        .tab-btn { background: transparent; border: none; color: #cbd5e1; font-size: 1.2rem; cursor: pointer; padding: 10px; transition: 0.3s; }
+        .tab-btn.active { color: var(--glow-cyan); font-weight: bold; border-bottom: 3px solid var(--glow-cyan); }
+        .tab-content { display: none; flex-direction: column; gap: 15px; }
+        .tab-content.active { display: flex; }
+
+        /* Builder Styles */
+        .builder-card { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 20px; border-radius: 12px; }
+        .builder-card header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .builder-row { display: flex; gap: 15px; align-items: center; }
+        .btn-small { padding: 10px 15px; font-size: 1rem; }
+        
+        /* 2x2 MCQ Grid */
+        .mcq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .mcq-box { background: rgba(255,255,255,0.05); border: 2px solid var(--glass-border); border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .mcq-box.correct { border-color: var(--correct-green); background: rgba(16, 185, 129, 0.15); box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+        .mcq-box input[type="text"] { margin: 0; border: none; background: rgba(0,0,0,0.3); }
+        .mcq-radio { width: 20px; height: 20px; cursor: pointer; accent-color: var(--correct-green); }
+
+        .preview-box { position: relative; width: 100%; max-width: 600px; margin: 0 auto; padding-top: 70.7%; background-color: #e2e8f0; background-size: contain; background-position: center; background-repeat: no-repeat; cursor: crosshair; overflow: hidden; border: 2px dashed #00f2fe; border-radius: 8px; }
         #draggable-name { position: absolute; padding: 10px; border: 2px solid red; background: rgba(255,255,255,0.7); cursor: grab; user-select: none; transform: translate(-50%, -50%); white-space: nowrap; font-weight: bold; }
         #draggable-name:active { cursor: grabbing; border-color: green; }
 
-        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-            .app-container { padding: 50px; }
-            h1 { font-size: 3.2rem; }
-            .radio-option { font-size: 1.4rem; padding: 22px 22px 22px 65px; }
-            button { font-size: 1.4rem; padding: 22px; }
-        }
     </style>
 </head>
 <body>
@@ -125,10 +123,8 @@
 <div class="stars"></div>
 <div class="planet planet-1"></div>
 <div class="planet planet-2"></div>
-<div class="planet planet-3"></div>
 <div class="rocket rocket-1">🚀</div>
 <div class="rocket rocket-2">🛸</div>
-<div class="rocket rocket-3">🛰️</div>
  
 <div class="settings-btn" onclick="requestAdminAccess()">⚙️</div>
  
@@ -144,7 +140,7 @@
     </div>
  
     <div id="page-quiz" class="page hidden">
-        <h1 id="quiz-header">Segment I</h1>
+        <h1 id="quiz-header">Assessment</h1>
         <h2 id="quiz-progress" style="color: var(--glow-cyan);">Question 1 of 9</h2>
         <div id="error-quiz" class="error-banner hidden">⚠️ Please provide an answer to advance!</div>
         
@@ -164,8 +160,7 @@
         <h2>Teacher Password Required</h2>
         <p style="text-align: center;">Cadet: Bring your iPad to your teacher now!</p>
         
-        <div id="teacher-essays-container">
-            </div>
+        <div id="teacher-essays-container"></div>
  
         <div style="margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.5); border-radius: 12px; border: 1px solid #f59e0b;">
             <label style="font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 8px;">Teacher Password:</label>
@@ -177,17 +172,17 @@
  
     <div id="page-success" class="page hidden">
         <h1>🎉 Mission Success</h1>
-        <h2 id="success-score-metric" style="color: var(--glow-cyan); font-size: 2rem;">Score: -- / --</h2>
+        <h2 id="success-score-metric" style="color: var(--glow-cyan); font-size: 2rem; text-align: center;">Score: -- / --</h2>
         <p style="text-align: center;">You passed! Enter your name exactly as you want it on your certificate.</p>
         
         <div class="question-wrapper">
-            <label style="font-weight: bold; font-size: 1.2rem;">First Name:</label>
+            <label style="font-weight: bold;">First Name:</label>
             <input type="text" id="cadet-first-name" placeholder="E.g., Sam">
             <br><br>
-            <label style="font-weight: bold; font-size: 1.2rem;">Code Name (Optional):</label>
+            <label style="font-weight: bold;">Code Name (Optional):</label>
             <input type="text" id="cadet-code-name" placeholder="E.g., Moon God">
             <br><br>
-            <label style="font-weight: bold; font-size: 1.2rem;">Last Name (Optional):</label>
+            <label style="font-weight: bold;">Last Name (Optional):</label>
             <input type="text" id="cadet-last-name" placeholder="E.g., Lee">
         </div>
         <button class="btn-primary" style="width: 100%;" onclick="renderCertificate()">Show My Certificate 🌟</button>
@@ -199,15 +194,15 @@
             <div class="cert-name-display" id="final-cert-name">Sample Name</div>
         </div>
         <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 15px;">
-            <button id="drive-btn" class="btn-drive" style="width: 100%; font-size: 1.3rem;" onclick="sendToDrive()">☁️ Transmit Direct to Teacher's Drive</button>
-            <button class="btn-secondary" style="width: 100%;" onclick="downloadCertificate()">⬇️ Download Copy Locally (Optional)</button>
+            <button id="drive-btn" class="btn-drive" style="width: 100%;" onclick="sendToDrive()">☁️ Transmit Direct to Teacher's Drive</button>
+            <button class="btn-secondary" style="width: 100%;" onclick="downloadCertificate()">⬇️ Download Copy Locally</button>
             <button class="btn-primary" style="width: 100%;" onclick="location.reload()">Start Next Student ⟳</button>
         </div>
     </div>
     
     <div id="page-fail" class="page hidden">
         <h1>🛸 Orbit Deflection</h1>
-        <h2 id="fail-score-metric" style="color: var(--neon-coral); font-size: 2rem;">Score: -- / --</h2>
+        <h2 id="fail-score-metric" style="color: var(--neon-coral); font-size: 2rem; text-align: center;">Score: -- / --</h2>
         <p style="text-align: center;">You didn't reach the required score. Study up and try again!</p>
         <button class="btn-primary" style="width: 100%;" onclick="location.reload()">Restart Mission ⟳</button>
     </div>
@@ -217,87 +212,101 @@
 <div id="settings-modal" class="modal-overlay hidden">
     <div class="modal-content">
         <div class="close-modal" onclick="closeSettings()">✖</div>
-        <h1>⚙️ Command Center</h1>
+        <h1 style="font-size: 2rem; margin-bottom: 15px;">⚙️ Command Center</h1>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div class="question-wrapper" style="border-color: #f59e0b; margin-bottom: 0;">
-                <div class="question-title">1. Background Graphic</div>
-                <input type="file" id="home-bg-upload" accept="image/*,video/*" style="background: transparent; border: none;">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('tab-visuals')">🎨 Visuals & Media</button>
+            <button class="tab-btn" onclick="switchTab('tab-rules')">📊 Grading Rules</button>
+            <button class="tab-btn" onclick="switchTab('tab-builder')">📝 Assessment Builder</button>
+        </div>
+
+        <div id="tab-visuals" class="tab-content active">
+            <div class="question-wrapper" style="border-color: #f59e0b;">
+                <div class="question-title">App Background Graphic</div>
+                <p style="font-size:0.9rem; margin-top:0;">Upload a file OR paste an image URL (e.g. from GitHub)</p>
+                <div class="builder-row">
+                    <input type="file" id="home-bg-upload" accept="image/*,video/*" style="flex: 1; padding: 10px;">
+                    <span style="font-weight:bold;">OR</span>
+                    <input type="url" id="home-bg-url" placeholder="Paste image URL here..." style="flex: 2;">
+                </div>
             </div>
-            <div class="question-wrapper" style="border-color: #a855f7; margin-bottom: 0;">
-                <div class="question-title">2. Certificate Graphic</div>
-                <input type="file" id="cert-upload" accept="image/*" style="background: transparent; border: none;">
+
+            <div class="question-wrapper" style="border-color: #a855f7;">
+                <div class="question-title">Certificate Graphic & Placement</div>
+                <p style="font-size:0.9rem; margin-top:0;">Upload a file OR paste a direct image URL.</p>
+                <div class="builder-row" style="margin-bottom: 15px;">
+                    <input type="file" id="cert-upload" accept="image/*" style="flex: 1; padding: 10px;">
+                    <span style="font-weight:bold;">OR</span>
+                    <input type="url" id="cert-url" placeholder="Paste image URL here..." style="flex: 2;">
+                </div>
+                
+                <div class="builder-row" style="margin-bottom: 15px;">
+                    <select id="font-selector" onchange="updatePreviewStyle()" style="flex: 2;">
+                        <option value="'Century Gothic', sans-serif">1. Century Gothic</option>
+                        <option value="'Comic Sans MS', cursive">2. Comic Sans MS</option>
+                        <option value="Arial, sans-serif">3. Arial</option>
+                        <option value="'Bubblegum Sans', cursive">4. Bubblegum Sans</option>
+                        <option value="'Quicksand', sans-serif">5. Quicksand</option>
+                        <option value="'Balsamiq Sans', cursive">6. Balsamiq Sans</option>
+                        <option value="'Fredoka One', cursive">7. Fredoka One</option>
+                        <option value="'Chewy', cursive">8. Chewy</option>
+                    </select>
+                    <input type="number" id="font-size-input" value="48" title="Font Size" onchange="updatePreviewStyle()" style="flex: 1;">
+                    <input type="color" id="font-color-input" value="#ffffff" style="height: 52px; flex: 1; padding: 5px;" onchange="updatePreviewStyle()">
+                </div>
+                
+                <p style="font-size: 0.9rem; text-align:center;">Drag the name below to position it perfectly.</p>
+                <div class="preview-box" id="preview-container">
+                    <div id="draggable-name">Sam "Moon God" Lee</div>
+                </div>
             </div>
         </div>
- 
-        <div class="question-wrapper" style="border-color: #a855f7; margin-top: 15px;">
-            <div class="question-title">3. Global Font Settings</div>
-            <div class="builder-row">
-                <select id="font-selector" onchange="updatePreviewStyle()">
-                    <option value="'Century Gothic', sans-serif">1. Century Gothic</option>
-                    <option value="'Comic Sans MS', cursive">2. Comic Sans MS</option>
-                    <option value="Arial, sans-serif">3. Arial</option>
-                    <option value="Verdana, sans-serif">4. Verdana</option>
-                    <option value="'Trebuchet MS', sans-serif">5. Trebuchet MS</option>
-                    <option value="'Bubblegum Sans', cursive">6. Bubblegum Sans</option>
-                    <option value="'Quicksand', sans-serif">7. Quicksand</option>
-                    <option value="'Balsamiq Sans', cursive">8. Balsamiq Sans</option>
-                    <option value="'Fredoka One', cursive">9. Fredoka One</option>
-                    <option value="'Chewy', cursive">10. Chewy</option>
-                </select>
-                <input type="number" id="font-size-input" value="48" title="Certificate Font Size" onchange="updatePreviewStyle()">
-                <input type="color" id="font-color-input" value="#ffffff" style="height: 45px;" onchange="updatePreviewStyle()">
-            </div>
-            <p style="font-size: 0.9rem; margin-top: 10px;">*Font style applies to the entire app. Drag name below to position on certificate.</p>
-            <div class="preview-box" id="preview-container">
-                <div id="draggable-name">Sam "Moon God" Lee</div>
-            </div>
-        </div>
- 
-        <div class="question-wrapper" style="border-color: #10b981;">
-            <div class="question-title">4. Assessment Builder</div>
-            
-            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid var(--glow-cyan);">
-                <label><strong>PASSING REQUIREMENT:</strong></label>
-                <p style="font-size: 0.9rem; margin-top: 5px;">Set the score required to get a certificate.</p>
-                <div class="builder-row" style="margin-top: 10px;">
-                    <select id="passing-type">
+
+        <div id="tab-rules" class="tab-content">
+            <div class="question-wrapper" style="border-color: #10b981;">
+                <div class="question-title">Passing Requirement</div>
+                <p style="font-size: 1rem;">Set the exact score or percentage a student needs to earn their certificate.</p>
+                <div class="builder-row">
+                    <select id="passing-type" style="flex: 1;">
                         <option value="points">Total Points (Score)</option>
                         <option value="percentage">Percentage (%)</option>
                     </select>
-                    <input type="number" id="passing-value" value="8" placeholder="E.g., 8">
+                    <input type="number" id="passing-value" value="8" style="flex: 1; font-size: 1.5rem; text-align: center; font-weight: bold;">
                 </div>
             </div>
- 
-            <div id="admin-questions-list"></div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
+        </div>
+
+        <div id="tab-builder" class="tab-content">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; border: 1px dashed var(--glow-cyan);">
                 <select id="add-q-type" style="flex: 2;">
                     <option value="mcq">Multiple Choice</option>
                     <option value="id">Identification</option>
                     <option value="matching">Matching Type</option>
-                    <option value="essay">Essay / Other Types</option>
+                    <option value="essay">Essay / Open Ended</option>
                 </select>
-                <button class="btn-secondary btn-small" onclick="addBuilderQuestion()" style="flex: 1;">+ Add Question</button>
+                <button class="btn-primary btn-small" onclick="addBuilderQuestion()" style="flex: 1;">+ Add Question</button>
             </div>
+            
+            <p style="font-size:0.9rem; color:#10b981; text-align:center;">Note: Questions are automatically grouped by type and shuffled to prevent cheating!</p>
+            <div id="admin-questions-list"></div>
         </div>
  
-        <div class="navigation-row">
-            <button class="btn-secondary" onclick="exportJSON()">⬇ Export Config</button>
-            <label class="btn-secondary" style="text-align:center; padding: 18px 25px; border-radius: 14px; cursor: pointer;">
+        <div class="navigation-row" style="margin-top: auto; padding-top: 20px;">
+            <button class="btn-secondary btn-small" onclick="exportJSON()">⬇ Export Config</button>
+            <label class="btn-secondary btn-small" style="text-align:center; padding: 12px; border-radius: 14px; cursor: pointer;">
                 ⬆ Import Config <input type="file" id="import-json" accept=".json" class="hidden" onchange="importJSON(event)">
             </label>
-            <button class="btn-success" onclick="saveSettings()">Save & Close</button>
+            <button class="btn-success btn-small" onclick="saveSettings()">Save & Close</button>
         </div>
     </div>
 </div>
  
 <script>
-    // --- DEFAULT CONFIGURATION RESTORED ---
+    // --- DEFAULT CONFIGURATION ---
     let config = {
-        certBase64: "", homeBgBase64: "", fontFamily: "'Century Gothic', sans-serif", fontSize: 48, fontColor: "#ffffff", posX: 50, posY: 50,
-        passingType: "points", // Original used a flat score to pass
-        passingValue: 8,       // Original required 8 out of 10 points
+        certBase64: "", homeBgBase64: "", certUrl: "", homeBgUrl: "", 
+        fontFamily: "'Century Gothic', sans-serif", fontSize: 48, fontColor: "#ffffff", posX: 50, posY: 50,
+        passingType: "points", passingValue: 8,
         questions: [
             { type: "mcq", text: "What is the hot star that gives our planet light?", options: ["The Moon", "Earth", "The Sun", "A Rocket"], answer: 2, points: 1 },
             { type: "mcq", text: "Why do astronauts float everywhere when they are in outer space?", options: ["Because they are swimming", "Because they wear heavy boots", "Because of zero gravity", "Because they are jumping"], answer: 2, points: 1 },
@@ -311,16 +320,26 @@
         ]
     };
  
+    let runtimeQuestions = [];
     let currentQIndex = 0;
     let earnedPoints = 0;
     let maxPoints = 0;
     let studentAnswers = []; 
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
  
     function applyGlobalStyles() {
         document.body.style.fontFamily = config.fontFamily;
         let bgLayer = document.getElementById('custom-bg-layer');
-        if (config.homeBgBase64) { bgLayer.src = config.homeBgBase64; bgLayer.style.opacity = 0.4; }
-        else bgLayer.style.opacity = 0;
+        let bgSource = config.homeBgUrl || config.homeBgBase64;
+        
+        if (bgSource) { bgLayer.src = bgSource; bgLayer.style.opacity = 0.4; }
+        else { bgLayer.style.opacity = 0; }
     }
  
     function navigateTo(pageId) {
@@ -329,12 +348,26 @@
         document.getElementById('main-app-container').scrollTop = 0;
     }
  
-    // --- QUIZ ENGINE ---
+    // --- SHUFFLING & QUIZ ENGINE ---
     function initQuiz() {
+        // Group by type, then shuffle within groups to prevent cheating
+        runtimeQuestions = [];
+        const order = ['mcq', 'id', 'matching', 'essay'];
+        
+        order.forEach(type => {
+            let group = config.questions.filter(q => q.type === type);
+            // Shuffle group
+            for (let i = group.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [group[i], group[j]] = [group[j], group[i]];
+            }
+            runtimeQuestions = runtimeQuestions.concat(group);
+        });
+
         currentQIndex = 0;
         earnedPoints = 0;
-        studentAnswers = new Array(config.questions.length).fill(null);
-        maxPoints = config.questions.reduce((sum, q) => sum + parseInt(q.points), 0);
+        studentAnswers = new Array(runtimeQuestions.length).fill(null);
+        maxPoints = runtimeQuestions.reduce((sum, q) => sum + parseInt(q.points), 0);
         
         buildQuizDOM();
         showQuestion(0);
@@ -345,7 +378,7 @@
         const container = document.getElementById('dynamic-quiz-container');
         container.innerHTML = '';
         
-        config.questions.forEach((q, index) => {
+        runtimeQuestions.forEach((q, index) => {
             let slide = document.createElement('div');
             slide.className = 'question-slide hidden';
             slide.id = `slide-${index}`;
@@ -354,13 +387,19 @@
                 <div class="question-title">${index + 1}. ${q.text} <span style="font-size:0.9rem; font-weight:normal; color:#cbd5e1;">(${q.points} pt${q.points>1?'s':''})</span></div>`;
             
             if (q.type === 'mcq') {
-                q.options.forEach((opt, i) => {
-                    html += `<label class="radio-option">${opt}
-                        <input type="radio" name="q${index}" value="${i}">
+                // Map to objects, shuffle the array, then render
+                let shuffledOpts = q.options.map((optText, origIndex) => {
+                    return { text: optText, isCorrect: origIndex === q.answer };
+                });
+                shuffledOpts.sort(() => Math.random() - 0.5); // Shuffle options
+                
+                shuffledOpts.forEach((opt, i) => {
+                    html += `<label class="radio-option">${opt.text}
+                        <input type="radio" name="q${index}" value="${opt.isCorrect}">
                         <span class="checkmark"></span></label>`;
                 });
             } else if (q.type === 'id') {
-                html += `<input type="text" id="input-q${index}" placeholder="Type answer here...">`;
+                html += `<input type="text" id="input-q${index}" placeholder="Type exact answer here...">`;
             } else if (q.type === 'essay') {
                 html += `<textarea id="input-q${index}" rows="5" placeholder="Write your response here..."></textarea>`;
             } else if (q.type === 'matching') {
@@ -384,7 +423,12 @@
     function showQuestion(index) {
         document.querySelectorAll('.question-slide').forEach(el => el.classList.add('hidden'));
         document.getElementById(`slide-${index}`).classList.remove('hidden');
-        document.getElementById('quiz-progress').innerText = `Question ${index + 1} of ${config.questions.length}`;
+        
+        let typeName = runtimeQuestions[index].type.toUpperCase();
+        if(typeName === 'MCQ') typeName = "Multiple Choice";
+        if(typeName === 'ID') typeName = "Identification";
+        document.getElementById('quiz-header').innerText = `Segment: ${typeName}`;
+        document.getElementById('quiz-progress').innerText = `Question ${index + 1} of ${runtimeQuestions.length}`;
         document.getElementById('error-quiz').classList.add('hidden');
  
         let backBtn = document.getElementById('btn-quiz-back');
@@ -392,16 +436,16 @@
         
         backBtn.onclick = () => { if (index === 0) navigateTo('page-home'); else showQuestion(index - 1); };
         nextBtn.onclick = () => processAnswerAndNext();
-        nextBtn.innerText = (index === config.questions.length - 1) ? "Submit to Commander 🚀" : "Next ▶";
+        nextBtn.innerText = (index === runtimeQuestions.length - 1) ? "Submit to Commander 🚀" : "Next ▶";
     }
  
     function processAnswerAndNext() {
-        let q = config.questions[currentQIndex];
+        let q = runtimeQuestions[currentQIndex];
         let isValid = false;
         
         if (q.type === 'mcq') {
             let checked = document.querySelector(`input[name="q${currentQIndex}"]:checked`);
-            if (checked) { studentAnswers[currentQIndex] = parseInt(checked.value); isValid = true; }
+            if (checked) { studentAnswers[currentQIndex] = checked.value === "true"; isValid = true; } // stores true/false
         } else if (q.type === 'id' || q.type === 'essay') {
             let val = document.getElementById(`input-q${currentQIndex}`).value.trim();
             if (val !== "") { studentAnswers[currentQIndex] = val; isValid = true; }
@@ -418,7 +462,7 @@
  
         if (!isValid) return document.getElementById('error-quiz').classList.remove('hidden');
  
-        if (currentQIndex === config.questions.length - 1) finalizeObjectiveGrades();
+        if (currentQIndex === runtimeQuestions.length - 1) finalizeObjectiveGrades();
         else showQuestion(++currentQIndex);
     }
  
@@ -426,10 +470,10 @@
         earnedPoints = 0;
         let requiresTeacher = false;
         
-        config.questions.forEach((q, i) => {
+        runtimeQuestions.forEach((q, i) => {
             let ans = studentAnswers[i];
             if (q.type === 'mcq') {
-                if (ans === parseInt(q.answer)) earnedPoints += parseInt(q.points);
+                if (ans === true) earnedPoints += parseInt(q.points);
             } else if (q.type === 'id') {
                 if (ans.toLowerCase().includes(q.answer.toLowerCase())) earnedPoints += parseInt(q.points);
             } else if (q.type === 'matching') {
@@ -449,7 +493,7 @@
         const container = document.getElementById('teacher-essays-container');
         container.innerHTML = '';
         
-        config.questions.forEach((q, i) => {
+        runtimeQuestions.forEach((q, i) => {
             if (q.type === 'essay') {
                 container.innerHTML += `
                 <div class="question-wrapper" style="border-left-color: var(--glowing-gold);">
@@ -464,12 +508,11 @@
     }
  
     function finalizeTeacherGrades() {
-        // FIXED: Reverted back to 1037440
         if(document.getElementById('grade-pin').value !== "1037440") {
             return document.getElementById('error-teacher').classList.remove('hidden');
         }
         
-        config.questions.forEach((q, i) => {
+        runtimeQuestions.forEach((q, i) => {
             if (q.type === 'essay') {
                 let pts = parseInt(document.getElementById(`grade-essay-${i}`).value) || 0;
                 earnedPoints += pts;
@@ -508,20 +551,27 @@
         config.questions.forEach((q, i) => {
             let html = `<div class="builder-card" id="b-card-${i}">
                 <header>
-                    <strong>Q${i+1} (${q.type.toUpperCase()})</strong>
-                    <button class="btn-danger btn-small" onclick="removeBuilderQuestion(${i})">Delete</button>
+                    <strong style="font-size:1.1rem; color:var(--glow-cyan);">Q${i+1} (${q.type.toUpperCase()})</strong>
+                    <div>
+                        <label>Points: </label>
+                        <input type="number" id="bq-pts-${i}" value="${q.points}" min="1" style="width:60px; padding:5px; margin-right:15px;">
+                        <button class="btn-danger btn-small" onclick="removeBuilderQuestion(${i})">Delete</button>
+                    </div>
                 </header>
-                <input type="text" id="bq-text-${i}" value="${q.text}" placeholder="Question text...">
-                <div class="builder-row">
-                    <label>Points:</label>
-                    <input type="number" id="bq-pts-${i}" value="${q.points}" min="1">
-                </div>`;
+                <input type="text" id="bq-text-${i}" value="${q.text}" placeholder="Question text...">`;
                 
             if (q.type === 'mcq') {
-                html += `<div style="margin-top:10px;"><label>Options (Comma separated):</label>
-                         <input type="text" id="bq-opts-${i}" value="${q.options.join(',')}">
-                         <label>Correct Option Index (0 = 1st, 1 = 2nd, 2 = 3rd, 3 = 4th):</label>
-                         <input type="number" id="bq-ans-${i}" value="${q.answer}" min="0" max="3"></div>`;
+                // 2x2 Grid UI
+                html += `<div class="mcq-grid">`;
+                for(let optIdx=0; optIdx < 4; optIdx++) {
+                    let isCor = q.answer === optIdx;
+                    html += `
+                    <div class="mcq-box ${isCor ? 'correct' : ''}" id="mcq-box-${i}-${optIdx}">
+                        <input type="radio" name="mcq-radio-${i}" class="mcq-radio" ${isCor ? 'checked' : ''} onclick="setMcqAnswer(${i}, ${optIdx})">
+                        <input type="text" id="bq-opt-${i}-${optIdx}" value="${q.options[optIdx] || ''}" placeholder="Option ${optIdx+1}">
+                    </div>`;
+                }
+                html += `</div>`;
             } else if (q.type === 'id') {
                 html += `<div style="margin-top:10px;"><label>Exact Answer:</label>
                          <input type="text" id="bq-ans-${i}" value="${q.answer}"></div>`;
@@ -534,11 +584,22 @@
             list.innerHTML += html;
         });
     }
+
+    // Function to handle the custom 2x2 grid selection visually
+    function setMcqAnswer(qIndex, correctOptIndex) {
+        config.questions[qIndex].answer = correctOptIndex;
+        for(let j=0; j<4; j++) {
+            let box = document.getElementById(`mcq-box-${qIndex}-${j}`);
+            if(j === correctOptIndex) box.classList.add('correct');
+            else box.classList.remove('correct');
+        }
+    }
  
     function addBuilderQuestion() {
+        scrapeBuilder(); // Save current work before adding
         let type = document.getElementById('add-q-type').value;
         let newQ = { type: type, text: "New Question", points: 1 };
-        if (type === 'mcq') { newQ.options = ["Opt 1", "Opt 2", "Opt 3", "Opt 4"]; newQ.answer = 0; }
+        if (type === 'mcq') { newQ.options = ["Option A", "Option B", "Option C", "Option D"]; newQ.answer = 0; }
         else if (type === 'id') { newQ.answer = "Answer"; }
         else if (type === 'matching') { newQ.pairs = [{left:"A", right:"1"}, {left:"B", right:"2"}]; }
         
@@ -554,14 +615,22 @@
     function scrapeBuilder() {
         config.passingType = document.getElementById('passing-type').value;
         config.passingValue = parseInt(document.getElementById('passing-value').value);
+        config.homeBgUrl = document.getElementById('home-bg-url').value.trim();
+        config.certUrl = document.getElementById('cert-url').value.trim();
         
         config.questions.forEach((q, i) => {
             q.text = document.getElementById(`bq-text-${i}`).value;
             q.points = parseInt(document.getElementById(`bq-pts-${i}`).value);
             
             if (q.type === 'mcq') {
-                q.options = document.getElementById(`bq-opts-${i}`).value.split(',').map(s => s.trim());
-                q.answer = parseInt(document.getElementById(`bq-ans-${i}`).value);
+                // Scrape from the 4 distinct inputs
+                q.options = [
+                    document.getElementById(`bq-opt-${i}-0`).value,
+                    document.getElementById(`bq-opt-${i}-1`).value,
+                    document.getElementById(`bq-opt-${i}-2`).value,
+                    document.getElementById(`bq-opt-${i}-3`).value
+                ];
+                // Answer is already stored dynamically by setMcqAnswer
             } else if (q.type === 'id') {
                 q.answer = document.getElementById(`bq-ans-${i}`).value.trim();
             } else if (q.type === 'matching') {
@@ -576,7 +645,6 @@
  
     // --- SETTINGS MANAGEMENT ---
     function requestAdminAccess() {
-        // FIXED: Reverted back to 1037440
         let pin = prompt("Enter Command Code:");
         if (pin === "1037440") {
             document.getElementById('settings-modal').classList.remove('hidden');
@@ -592,8 +660,11 @@
         document.getElementById('font-color-input').value = config.fontColor;
         document.getElementById('passing-type').value = config.passingType;
         document.getElementById('passing-value').value = config.passingValue;
+        document.getElementById('home-bg-url').value = config.homeBgUrl || '';
+        document.getElementById('cert-url').value = config.certUrl || '';
         
-        if(config.certBase64) document.getElementById('preview-container').style.backgroundImage = `url(${config.certBase64})`;
+        let certSource = config.certUrl || config.certBase64;
+        if(certSource) document.getElementById('preview-container').style.backgroundImage = `url(${certSource})`;
         
         let dragName = document.getElementById('draggable-name');
         dragName.style.left = `${config.posX}%`;
@@ -619,19 +690,34 @@
         scrapeBuilder();
         alert("Configuration saved!");
         applyGlobalStyles();
+        
+        // Ensure preview box updates if URL changed
+        let certSource = config.certUrl || config.certBase64;
+        if(certSource) document.getElementById('preview-container').style.backgroundImage = `url(${certSource})`;
+        
         closeSettings();
     }
  
-    // Image Uploads
+    // Image Uploads (Kept as fallback to URLs)
     document.getElementById('cert-upload').addEventListener('change', e => {
         if (e.target.files[0]) {
-            let r = new FileReader(); r.onload = evt => { config.certBase64 = evt.target.result; document.getElementById('preview-container').style.backgroundImage = `url(${config.certBase64})`; };
+            let r = new FileReader(); r.onload = evt => { 
+                config.certBase64 = evt.target.result; 
+                config.certUrl = ""; // Clear URL if uploading
+                document.getElementById('cert-url').value = "";
+                document.getElementById('preview-container').style.backgroundImage = `url(${config.certBase64})`; 
+            };
             r.readAsDataURL(e.target.files[0]);
         }
     });
     document.getElementById('home-bg-upload').addEventListener('change', e => {
         if (e.target.files[0]) {
-            let r = new FileReader(); r.onload = evt => { config.homeBgBase64 = evt.target.result; applyGlobalStyles(); };
+            let r = new FileReader(); r.onload = evt => { 
+                config.homeBgBase64 = evt.target.result; 
+                config.homeBgUrl = ""; // Clear URL if uploading
+                document.getElementById('home-bg-url').value = "";
+                applyGlobalStyles(); 
+            };
             r.readAsDataURL(e.target.files[0]);
         }
     });
@@ -667,6 +753,7 @@
  
     // JSON Import/Export
     function exportJSON() {
+        scrapeBuilder(); // Ensure latest changes are caught
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config));
         let node = document.createElement('a'); node.setAttribute("href", dataStr); node.setAttribute("download", "moon_mission_config.json");
         document.body.appendChild(node); node.click(); node.remove();
@@ -693,7 +780,9 @@
 
         let certBg = document.getElementById('final-cert-bg');
         let certName = document.getElementById('final-cert-name');
-        if(config.certBase64) certBg.style.backgroundImage = `url(${config.certBase64})`;
+        
+        let certSource = config.certUrl || config.certBase64;
+        if(certSource) certBg.style.backgroundImage = `url(${certSource})`;
         
         navigateTo('page-certificate');
         let scaleFactor = Math.min(certBg.offsetWidth / 800, 1);
