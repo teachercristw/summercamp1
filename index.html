@@ -109,7 +109,6 @@
             border: none;
         }
  
-        /* FIXED: Removed Text Shadows, added solid contrast if needed */
         .cert-name-display { 
             position: absolute; 
             transform: translate(-50%, -50%); 
@@ -160,95 +159,97 @@
         <p style="text-align: center; margin-bottom: 35px;">
             Welcome, Cadet! Prepare to launch your terminal engine. Answer carefully to secure your wings and receive your official Space Certificate.
         </p>
-        <button class="btn-primary" onclick="navigateTo('page-mc')">Initiate Launch Sequence ➔</button>
+        <button class="btn-primary" onclick="initQuiz()">Initiate Launch Sequence ➔</button>
     </div>
  
-    <div id="page-mc" class="page hidden">
-        <h1>Segment I</h1>
-        <h2>Multiple Choice Systems (1 Pt Each)</h2>
-        <div id="error-mc" class="error-banner hidden">⚠️ Please answer all questions to advance!</div>
+    <div id="page-quiz" class="page hidden">
+        <h1 id="quiz-header">Segment I</h1>
+        <h2 id="quiz-progress" style="color: var(--glow-cyan);">Question 1 of 9</h2>
+        <div id="error-quiz" class="error-banner hidden">⚠️ Please provide an answer to advance!</div>
         
-        <form id="form-mc">
-            <div class="question-wrapper">
-                <div class="question-title">1. What is the hot star that gives our planet light?</div>
-                <label class="radio-option">A) The Moon<input type="radio" name="q1" value="A"><span class="checkmark"></span></label>
-                <label class="radio-option">B) Earth<input type="radio" name="q1" value="B"><span class="checkmark"></span></label>
-                <label class="radio-option">C) The Sun<input type="radio" name="q1" value="C"><span class="checkmark"></span></label>
-                <label class="radio-option">D) A Rocket<input type="radio" name="q1" value="D"><span class="checkmark"></span></label>
+        <form id="form-quiz">
+            <div class="question-slide" id="slide-1">
+                <div class="question-wrapper">
+                    <div class="question-title">1. What is the hot star that gives our planet light?</div>
+                    <label class="radio-option">A) The Moon<input type="radio" name="q1" value="A"><span class="checkmark"></span></label>
+                    <label class="radio-option">B) Earth<input type="radio" name="q1" value="B"><span class="checkmark"></span></label>
+                    <label class="radio-option">C) The Sun<input type="radio" name="q1" value="C"><span class="checkmark"></span></label>
+                    <label class="radio-option">D) A Rocket<input type="radio" name="q1" value="D"><span class="checkmark"></span></label>
+                </div>
             </div>
-            <div class="question-wrapper">
-                <div class="question-title">2. Why do astronauts float everywhere when they are in outer space?</div>
-                <label class="radio-option">A) Because they are swimming<input type="radio" name="q2" value="A"><span class="checkmark"></span></label>
-                <label class="radio-option">B) Because they wear heavy boots<input type="radio" name="q2" value="B"><span class="checkmark"></span></label>
-                <label class="radio-option">C) Because of zero gravity<input type="radio" name="q2" value="C"><span class="checkmark"></span></label>
-                <label class="radio-option">D) Because they are jumping<input type="radio" name="q2" value="D"><span class="checkmark"></span></label>
+            
+            <div class="question-slide hidden" id="slide-2">
+                <div class="question-wrapper">
+                    <div class="question-title">2. Why do astronauts float everywhere when they are in outer space?</div>
+                    <label class="radio-option">A) Because they are swimming<input type="radio" name="q2" value="A"><span class="checkmark"></span></label>
+                    <label class="radio-option">B) Because they wear heavy boots<input type="radio" name="q2" value="B"><span class="checkmark"></span></label>
+                    <label class="radio-option">C) Because of zero gravity<input type="radio" name="q2" value="C"><span class="checkmark"></span></label>
+                    <label class="radio-option">D) Because they are jumping<input type="radio" name="q2" value="D"><span class="checkmark"></span></label>
+                </div>
             </div>
-            <div class="question-wrapper">
-                <div class="question-title">3. Good astronauts do not make trash! Which of these items should go into the "We Can Recycle" bin?</div>
-                <label class="radio-option">A) A banana peel<input type="radio" name="q3" value="A"><span class="checkmark"></span></label>
-                <label class="radio-option">B) A dirty tissue<input type="radio" name="q3" value="B"><span class="checkmark"></span></label>
-                <label class="radio-option">C) Chicken bones<input type="radio" name="q3" value="C"><span class="checkmark"></span></label>
-                <label class="radio-option">D) A plastic bottle<input type="radio" name="q3" value="D"><span class="checkmark"></span></label>
+
+            <div class="question-slide hidden" id="slide-3">
+                <div class="question-wrapper">
+                    <div class="question-title">3. Good astronauts do not make trash! Which of these items should go into the "We Can Recycle" bin?</div>
+                    <label class="radio-option">A) A banana peel<input type="radio" name="q3" value="A"><span class="checkmark"></span></label>
+                    <label class="radio-option">B) A dirty tissue<input type="radio" name="q3" value="B"><span class="checkmark"></span></label>
+                    <label class="radio-option">C) Chicken bones<input type="radio" name="q3" value="C"><span class="checkmark"></span></label>
+                    <label class="radio-option">D) A plastic bottle<input type="radio" name="q3" value="D"><span class="checkmark"></span></label>
+                </div>
             </div>
-            <div class="question-wrapper">
-                <div class="question-title">4. What must an astronaut wear to give them air to breathe when they go outside into space?</div>
-                <label class="radio-option">A) A Space Suit<input type="radio" name="q4" value="A"><span class="checkmark"></span></label>
-                <label class="radio-option">B) A Winter Coat<input type="radio" name="q4" value="B"><span class="checkmark"></span></label>
-                <label class="radio-option">C) A Swimsuit<input type="radio" name="q4" value="C"><span class="checkmark"></span></label>
-                <label class="radio-option">D) A School Uniform<input type="radio" name="q4" value="D"><span class="checkmark"></span></label>
+
+            <div class="question-slide hidden" id="slide-4">
+                <div class="question-wrapper">
+                    <div class="question-title">4. What must an astronaut wear to give them air to breathe when they go outside into space?</div>
+                    <label class="radio-option">A) A Space Suit<input type="radio" name="q4" value="A"><span class="checkmark"></span></label>
+                    <label class="radio-option">B) A Winter Coat<input type="radio" name="q4" value="B"><span class="checkmark"></span></label>
+                    <label class="radio-option">C) A Swimsuit<input type="radio" name="q4" value="C"><span class="checkmark"></span></label>
+                    <label class="radio-option">D) A School Uniform<input type="radio" name="q4" value="D"><span class="checkmark"></span></label>
+                </div>
             </div>
-            <div class="question-wrapper">
-                <div class="question-title">5. Outer space is completely silent. Why can't we hear sound in space?</div>
-                <label class="radio-option">A) Because the planets are sleeping<input type="radio" name="q5" value="A"><span class="checkmark"></span></label>
-                <label class="radio-option">B) Because there is no air for sound to travel through<input type="radio" name="q5" value="B"><span class="checkmark"></span></label>
-                <label class="radio-option">C) Because astronauts whisper<input type="radio" name="q5" value="C"><span class="checkmark"></span></label>
-                <label class="radio-option">D) Because the stars are too bright<input type="radio" name="q5" value="D"><span class="checkmark"></span></label>
+
+            <div class="question-slide hidden" id="slide-5">
+                <div class="question-wrapper">
+                    <div class="question-title">5. Outer space is completely silent. Why can't we hear sound in space?</div>
+                    <label class="radio-option">A) Because the planets are sleeping<input type="radio" name="q5" value="A"><span class="checkmark"></span></label>
+                    <label class="radio-option">B) Because there is no air for sound to travel through<input type="radio" name="q5" value="B"><span class="checkmark"></span></label>
+                    <label class="radio-option">C) Because astronauts whisper<input type="radio" name="q5" value="C"><span class="checkmark"></span></label>
+                    <label class="radio-option">D) Because the stars are too bright<input type="radio" name="q5" value="D"><span class="checkmark"></span></label>
+                </div>
+            </div>
+
+            <div class="question-slide hidden" id="slide-6">
+                <div class="question-wrapper">
+                    <div class="question-title">6. The vehicle that uses a ton of fire and energy to push away from Earth's gravity and travel to space.</div>
+                    <input type="text" id="q6" placeholder="Type answer here...">
+                </div>
+            </div>
+
+            <div class="question-slide hidden" id="slide-7">
+                <div class="question-wrapper">
+                    <div class="question-title">7. The big grey rock in our night sky that has giant holes called craters.</div>
+                    <input type="text" id="q7" placeholder="Type answer here...">
+                </div>
+            </div>
+
+            <div class="question-slide hidden" id="slide-8">
+                <div class="question-wrapper">
+                    <div class="question-title">8. The circle path that a planet takes to go all the way around the Sun.</div>
+                    <input type="text" id="q8" placeholder="Type answer here...">
+                </div>
+            </div>
+
+            <div class="question-slide hidden" id="slide-9">
+                <div class="question-wrapper">
+                    <div class="question-title">9. In your own words, write 2 or 3 sentences explaining why it is important for Eco-Astronauts to recycle. What happens to the Earth if we make too much trash?</div>
+                    <textarea id="q9" rows="5" placeholder="Write your sentences here..."></textarea>
+                </div>
             </div>
         </form>
  
         <div class="navigation-row">
-            <button class="btn-secondary" onclick="navigateTo('page-home')">◀ Back</button>
-            <button class="btn-primary" onclick="validateAndNext('mc')">Next Stage ▶</button>
-        </div>
-    </div>
- 
-    <div id="page-id" class="page hidden">
-        <h1>Segment II</h1>
-        <h2>Telemetry Identification (1 Pt Each)</h2>
-        <div id="error-id" class="error-banner hidden">⚠️ Please type an answer for all three blanks.</div>
- 
-        <div class="question-wrapper">
-            <div class="question-title">6. The vehicle that uses a ton of fire and energy to push away from Earth's gravity and travel to space.</div>
-            <input type="text" id="q6" placeholder="Type answer here...">
-        </div>
-        <div class="question-wrapper">
-            <div class="question-title">7. The big grey rock in our night sky that has giant holes called craters.</div>
-            <input type="text" id="q7" placeholder="Type answer here...">
-        </div>
-        <div class="question-wrapper">
-            <div class="question-title">8. The circle path that a planet takes to go all the way around the Sun.</div>
-            <input type="text" id="q8" placeholder="Type answer here...">
-        </div>
- 
-        <div class="navigation-row">
-            <button class="btn-secondary" onclick="navigateTo('page-mc')">◀ Back</button>
-            <button class="btn-primary" onclick="validateAndNext('id')">Next Stage ▶</button>
-        </div>
-    </div>
- 
-    <div id="page-essay" class="page hidden">
-        <h1>Segment III</h1>
-        <h2>Eco-Analysis Directive (2 Pts)</h2>
-        <div id="error-essay" class="error-banner hidden">⚠️ Please write your sentences to transmit data.</div>
- 
-        <div class="question-wrapper">
-            <div class="question-title">9. In your own words, write 2 or 3 sentences explaining why it is important for Eco-Astronauts to recycle. What happens to the Earth if we make too much trash?</div>
-            <textarea id="q9" rows="5" placeholder="Write your sentences here..."></textarea>
-        </div>
- 
-        <div class="navigation-row">
-            <button class="btn-secondary" onclick="navigateTo('page-id')">◀ Back</button>
-            <button class="btn-primary" onclick="validateAndNext('essay')">Submit to Commander 🚀</button>
+            <button id="btn-quiz-back" class="btn-secondary">◀ Back</button>
+            <button id="btn-quiz-next" class="btn-primary">Next ▶</button>
         </div>
     </div>
  
@@ -283,11 +284,11 @@
             <label style="font-weight: bold; font-size: 1.2rem;">First Name:</label>
             <input type="text" id="cadet-first-name" placeholder="E.g., Sam">
             <br><br>
-            <label style="font-weight: bold; font-size: 1.2rem;">Code Name:</label>
+            <label style="font-weight: bold; font-size: 1.2rem;">Code Name (Optional):</label>
             <input type="text" id="cadet-code-name" placeholder="E.g., Moon God">
             <br><br>
             <label style="font-weight: bold; font-size: 1.2rem;">Last Name (Optional):</label>
-            <input type="text" id="cadet-last-name" placeholder="E.g., Lin">
+            <input type="text" id="cadet-last-name" placeholder="E.g., Lee">
         </div>
         <button class="btn-primary" style="width: 100%;" onclick="renderCertificate()">Show My Certificate 🌟</button>
     </div>
@@ -301,7 +302,6 @@
         
         <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 15px;">
             <button id="drive-btn" class="btn-drive" style="width: 100%; font-size: 1.3rem;" onclick="sendToDrive()">☁️ Transmit Direct to Teacher's Drive</button>
-            
             <button class="btn-secondary" style="width: 100%;" onclick="downloadCertificate()">⬇️ Download Copy Locally (Optional)</button>
             <button class="btn-primary" style="width: 100%;" onclick="location.reload()">Start Next Student ⟳</button>
         </div>
@@ -357,7 +357,7 @@
         <div class="question-wrapper" style="border-color: #a855f7;">
             <div class="question-title">4. Drag & Drop Position Placement</div>
             <div class="preview-box" id="preview-container">
-                <div id="draggable-name">Sam "Moon God" Lin</div>
+                <div id="draggable-name">Sam "Moon God" Lee</div>
             </div>
         </div>
  
@@ -385,7 +385,11 @@
     };
  
     let currentScore = 0;
- 
+    
+    // --- NEW: QUIZ PAGINATION LOGIC ---
+    let currentQ = 1;
+    const totalQ = 9;
+
     function applyHomeBackground() {
         let bgLayer = document.getElementById('custom-bg-layer');
         if (config.homeBgBase64) {
@@ -401,25 +405,66 @@
         document.getElementById(pageId).classList.remove('hidden');
         document.getElementById('main-app-container').scrollTop = 0;
     }
- 
-    function validateAndNext(stage) {
-        if (stage === 'mc') {
-            let pass = true;
-            for(let i=1; i<=5; i++) { if(!document.querySelector(`input[name="q${i}"]:checked`)) pass = false; }
-            if(!pass) return document.getElementById('error-mc').classList.remove('hidden');
-            document.getElementById('error-mc').classList.add('hidden');
-            navigateTo('page-id');
-        } else if (stage === 'id') {
-            if(!document.getElementById('q6').value || !document.getElementById('q7').value || !document.getElementById('q8').value) {
-                return document.getElementById('error-id').classList.remove('hidden');
-            }
-            document.getElementById('error-id').classList.add('hidden');
-            navigateTo('page-essay');
-        } else if (stage === 'essay') {
-            if(!document.getElementById('q9').value) return document.getElementById('error-essay').classList.remove('hidden');
+
+    function initQuiz() {
+        currentQ = 1;
+        showQuestion(currentQ);
+        navigateTo('page-quiz');
+    }
+
+    function showQuestion(index) {
+        // Hide all questions, show only current
+        document.querySelectorAll('.question-slide').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`slide-${index}`).classList.remove('hidden');
+        
+        // Update header and progress indicator
+        document.getElementById('quiz-progress').innerText = `Question ${index} of ${totalQ}`;
+        document.getElementById('error-quiz').classList.add('hidden');
+
+        let header = document.getElementById('quiz-header');
+        if (index <= 5) header.innerText = "Segment I: Multiple Choice";
+        else if (index <= 8) header.innerText = "Segment II: Telemetry ID";
+        else header.innerText = "Segment III: Eco-Analysis";
+
+        // Handle buttons
+        let backBtn = document.getElementById('btn-quiz-back');
+        let nextBtn = document.getElementById('btn-quiz-next');
+
+        backBtn.onclick = () => {
+            if (index === 1) navigateTo('page-home');
+            else showQuestion(index - 1);
+        };
+
+        nextBtn.onclick = () => nextQuestion();
+
+        if (index === totalQ) nextBtn.innerText = "Submit to Commander 🚀";
+        else nextBtn.innerText = "Next ▶";
+    }
+
+    function nextQuestion() {
+        let isValid = false;
+        
+        // Validate based on question type
+        if (currentQ <= 5) {
+            if (document.querySelector(`input[name="q${currentQ}"]:checked`)) isValid = true;
+        } else if (currentQ <= 8) {
+            if (document.getElementById(`q${currentQ}`).value.trim() !== "") isValid = true;
+        } else if (currentQ === 9) {
+            if (document.getElementById(`q${currentQ}`).value.trim() !== "") isValid = true;
+        }
+
+        if (!isValid) {
+            document.getElementById('error-quiz').classList.remove('hidden');
+            return; // Stop them from moving forward
+        }
+
+        if (currentQ === totalQ) {
+            // Final submission logic
             document.getElementById('display-essay-text').innerText = document.getElementById('q9').value;
-            document.getElementById('error-essay').classList.add('hidden');
             navigateTo('page-teacher');
+        } else {
+            currentQ++;
+            showQuestion(currentQ);
         }
     }
  
@@ -428,6 +473,8 @@
             return document.getElementById('error-teacher').classList.remove('hidden');
         }
         currentScore = 0;
+        
+        // The DOM elements are exactly the same, so grading works seamlessly behind the scenes
         if(document.querySelector('input[name="q1"]:checked').value === 'C') currentScore++;
         if(document.querySelector('input[name="q2"]:checked').value === 'C') currentScore++;
         if(document.querySelector('input[name="q3"]:checked').value === 'D') currentScore++;
@@ -512,7 +559,7 @@
 
             fetch(scriptUrl, {
                 method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" }, // Prevents CORS errors
+                headers: { "Content-Type": "text/plain;charset=utf-8" }, 
                 body: JSON.stringify({
                     name: fileName,
                     mimeType: "image/png",
@@ -597,6 +644,7 @@
         closeSettings();
     }
  
+    // --- DRAG LOGIC FIX: Perfect percentage calculation ---
     dragElement(document.getElementById("draggable-name"));
     function dragElement(elmnt) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -618,9 +666,20 @@
         }
         function closeDragElement() {
             document.onmouseup = null; document.onmousemove = null; document.ontouchend = null; document.ontouchmove = null;
+            
             let parentRect = elmnt.parentElement.getBoundingClientRect();
-            config.posX = ((elmnt.offsetLeft) / parentRect.width) * 100;
-            config.posY = ((elmnt.offsetTop) / parentRect.height) * 100;
+            let elmntRect = elmnt.getBoundingClientRect();
+            
+            // Calculate absolute center point of element relative to parent container
+            let centerX = elmntRect.left + (elmntRect.width / 2) - parentRect.left;
+            let centerY = elmntRect.top + (elmntRect.height / 2) - parentRect.top;
+            
+            config.posX = (centerX / parentRect.width) * 100;
+            config.posY = (centerY / parentRect.height) * 100;
+
+            // Immediately switch inline style back to accurate percentage to prevent resizing glitches
+            elmnt.style.left = `${config.posX}%`;
+            elmnt.style.top = `${config.posY}%`;
         }
     }
  
