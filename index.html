@@ -609,7 +609,7 @@
         renderBuilderList();
     }
  
-    // FIXED: The Scraper now rigorously checks the Visuals & Rules tabs!
+    // FIXED: The Scraper now rigorously checks the Visuals & Rules tabs WITHOUT overwriting PosX!
     function scrapeBuilder() {
         // 1. Rules Tab
         config.passingType = document.getElementById('passing-type').value;
@@ -621,11 +621,8 @@
         config.fontFamily = document.getElementById('font-selector').value;
         config.fontSize = document.getElementById('font-size-input').value;
         config.fontColor = document.getElementById('font-color-input').value;
-
-        // Force position grab directly from the draggable element
-        let dragName = document.getElementById('draggable-name');
-        if (dragName.style.left) config.posX = parseFloat(dragName.style.left);
-        if (dragName.style.top) config.posY = parseFloat(dragName.style.top);
+        
+        // Notice: We strictly DO NOT touch config.posX or config.posY here anymore.
         
         // 3. Builder Tab
         config.questions.forEach((q, i) => {
@@ -663,26 +660,45 @@
     function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
  
     function loadSettingsToUI() {
-        document.getElementById('font-selector').value = config.fontFamily;
-        document.getElementById('font-size-input').value = config.fontSize;
-        document.getElementById('font-color-input').value = config.fontColor;
-        document.getElementById('passing-type').value = config.passingType;
-        document.getElementById('passing-value').value = config.passingValue;
+        document.getElementById('font-size-input').value = config.fontSize || 48;
+        document.getElementById('font-color-input').value = config.fontColor || '#ffffff';
+        document.getElementById('passing-type').value = config.passingType || "points";
+        document.getElementById('passing-value').value = config.passingValue || 8;
         document.getElementById('home-bg-url').value = config.homeBgUrl || '';
         document.getElementById('cert-url').value = config.certUrl || '';
         
+        // Smart Font Fallback (In case manual JSON edits strip the quotes)
+        let fontSel = document.getElementById('font-selector');
+        fontSel.value = config.fontFamily;
+        if (!fontSel.value) { 
+            for (let opt of fontSel.options) {
+                if (opt.value.includes(config.fontFamily.replace(/['"]/g, '').split(',')[0])) {
+                    fontSel.value = opt.value;
+                    config.fontFamily = opt.value; // lock it to the valid option
+                    break;
+                }
+            }
+        }
+        
+        // Ensure Certificate Preview Loads
         let certSource = config.certUrl || config.certBase64;
         if(certSource) document.getElementById('preview-container').style.backgroundImage = `url("${certSource}")`;
         
+        // IMPORTANT FIX: We apply the visual styles directly here, bypassing updatePreviewStyle()
+        // so we don't accidentally overwrite the user's JSON config with bad input reads.
         let dragName = document.getElementById('draggable-name');
+        dragName.style.fontFamily = config.fontFamily;
+        dragName.style.fontSize = `${config.fontSize * 0.7}px`; 
+        dragName.style.color = config.fontColor;
         dragName.style.left = `${config.posX}%`;
         dragName.style.top = `${config.posY}%`;
         
-        updatePreviewStyle();
+        applyGlobalStyles();
         renderBuilderList();
     }
  
     function updatePreviewStyle() {
+        // This function is ONLY called when the user manually changes an input inside the modal.
         config.fontFamily = document.getElementById('font-selector').value;
         config.fontSize = document.getElementById('font-size-input').value;
         config.fontColor = document.getElementById('font-color-input').value;
@@ -729,7 +745,7 @@
         }
     });
  
-    // Drag & Drop
+    // Drag & Drop (Natively Updates Config in Real Time)
     dragElement(document.getElementById("draggable-name"));
     function dragElement(elmnt) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -752,6 +768,7 @@
         function closeDragElement() {
             document.onmouseup = null; document.onmousemove = null; document.ontouchend = null; document.ontouchmove = null;
             let pR = elmnt.parentElement.getBoundingClientRect(), eR = elmnt.getBoundingClientRect();
+            // Perfectly records the position the moment you let go of the mouse
             config.posX = ((eR.left + (eR.width/2) - pR.left) / pR.width) * 100;
             config.posY = ((eR.top + (eR.height/2) - pR.top) / pR.height) * 100;
             elmnt.style.left = `${config.posX}%`; elmnt.style.top = `${config.posY}%`;
@@ -776,8 +793,12 @@
     function importJSON(e) {
         if (e.target.files[0]) {
             let r = new FileReader(); r.onload = evt => {
-                try { config = JSON.parse(evt.target.result); loadSettingsToUI(); applyGlobalStyles(); alert("Imported!"); } 
-                catch(err) { alert("Invalid JSON"); }
+                try { 
+                    config = JSON.parse(evt.target.result); 
+                    loadSettingsToUI(); 
+                    applyGlobalStyles(); 
+                    alert("Imported Successfully!"); 
+                } catch(err) { alert("Invalid JSON file."); }
             }; r.readAsText(e.target.files[0]);
         }
     }
@@ -852,7 +873,7 @@
         });
     }
 
-    // FIXED: The cache-buster timestamp prevents GitHub from showing you an old file
+    // FIXED: Added Cache-Buster Timestamp to prevent GitHub from serving old, deleted files
     async function autoLoadConfig() {
         try {
             const cacheBuster = new Date().getTime();
