@@ -145,8 +145,7 @@
         <div id="error-quiz" class="error-banner hidden">⚠️ Please provide an answer to advance!</div>
         
         <form id="form-quiz">
-            <div id="dynamic-quiz-container">
-                </div>
+            <div id="dynamic-quiz-container"></div>
         </form>
  
         <div class="navigation-row">
@@ -302,9 +301,12 @@
 </div>
  
 <script>
-    // --- DEFAULT CONFIGURATION ---
+    // --- DEFAULT CONFIGURATION INCLUDES YOUR URL ---
     let config = {
-        certBase64: "", homeBgBase64: "", certUrl: "", homeBgUrl: "", 
+        certBase64: "", 
+        homeBgBase64: "", 
+        certUrl: "https://raw.githubusercontent.com/teachercristw/summercamp1/main/certificate.png", 
+        homeBgUrl: "", 
         fontFamily: "'Century Gothic', sans-serif", fontSize: 48, fontColor: "#ffffff", posX: 50, posY: 50,
         passingType: "points", passingValue: 8,
         questions: [
@@ -350,13 +352,11 @@
  
     // --- SHUFFLING & QUIZ ENGINE ---
     function initQuiz() {
-        // Group by type, then shuffle within groups to prevent cheating
         runtimeQuestions = [];
         const order = ['mcq', 'id', 'matching', 'essay'];
         
         order.forEach(type => {
             let group = config.questions.filter(q => q.type === type);
-            // Shuffle group
             for (let i = group.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [group[i], group[j]] = [group[j], group[i]];
@@ -387,11 +387,10 @@
                 <div class="question-title">${index + 1}. ${q.text} <span style="font-size:0.9rem; font-weight:normal; color:#cbd5e1;">(${q.points} pt${q.points>1?'s':''})</span></div>`;
             
             if (q.type === 'mcq') {
-                // Map to objects, shuffle the array, then render
                 let shuffledOpts = q.options.map((optText, origIndex) => {
                     return { text: optText, isCorrect: origIndex === q.answer };
                 });
-                shuffledOpts.sort(() => Math.random() - 0.5); // Shuffle options
+                shuffledOpts.sort(() => Math.random() - 0.5); 
                 
                 shuffledOpts.forEach((opt, i) => {
                     html += `<label class="radio-option">${opt.text}
@@ -445,7 +444,7 @@
         
         if (q.type === 'mcq') {
             let checked = document.querySelector(`input[name="q${currentQIndex}"]:checked`);
-            if (checked) { studentAnswers[currentQIndex] = checked.value === "true"; isValid = true; } // stores true/false
+            if (checked) { studentAnswers[currentQIndex] = checked.value === "true"; isValid = true; } 
         } else if (q.type === 'id' || q.type === 'essay') {
             let val = document.getElementById(`input-q${currentQIndex}`).value.trim();
             if (val !== "") { studentAnswers[currentQIndex] = val; isValid = true; }
@@ -561,7 +560,6 @@
                 <input type="text" id="bq-text-${i}" value="${q.text}" placeholder="Question text...">`;
                 
             if (q.type === 'mcq') {
-                // 2x2 Grid UI
                 html += `<div class="mcq-grid">`;
                 for(let optIdx=0; optIdx < 4; optIdx++) {
                     let isCor = q.answer === optIdx;
@@ -585,7 +583,6 @@
         });
     }
 
-    // Function to handle the custom 2x2 grid selection visually
     function setMcqAnswer(qIndex, correctOptIndex) {
         config.questions[qIndex].answer = correctOptIndex;
         for(let j=0; j<4; j++) {
@@ -596,7 +593,7 @@
     }
  
     function addBuilderQuestion() {
-        scrapeBuilder(); // Save current work before adding
+        scrapeBuilder(); 
         let type = document.getElementById('add-q-type').value;
         let newQ = { type: type, text: "New Question", points: 1 };
         if (type === 'mcq') { newQ.options = ["Option A", "Option B", "Option C", "Option D"]; newQ.answer = 0; }
@@ -623,14 +620,12 @@
             q.points = parseInt(document.getElementById(`bq-pts-${i}`).value);
             
             if (q.type === 'mcq') {
-                // Scrape from the 4 distinct inputs
                 q.options = [
                     document.getElementById(`bq-opt-${i}-0`).value,
                     document.getElementById(`bq-opt-${i}-1`).value,
                     document.getElementById(`bq-opt-${i}-2`).value,
                     document.getElementById(`bq-opt-${i}-3`).value
                 ];
-                // Answer is already stored dynamically by setMcqAnswer
             } else if (q.type === 'id') {
                 q.answer = document.getElementById(`bq-ans-${i}`).value.trim();
             } else if (q.type === 'matching') {
@@ -664,7 +659,7 @@
         document.getElementById('cert-url').value = config.certUrl || '';
         
         let certSource = config.certUrl || config.certBase64;
-        if(certSource) document.getElementById('preview-container').style.backgroundImage = `url(${certSource})`;
+        if(certSource) document.getElementById('preview-container').style.backgroundImage = `url("${certSource}")`;
         
         let dragName = document.getElementById('draggable-name');
         dragName.style.left = `${config.posX}%`;
@@ -691,21 +686,20 @@
         alert("Configuration saved!");
         applyGlobalStyles();
         
-        // Ensure preview box updates if URL changed
         let certSource = config.certUrl || config.certBase64;
-        if(certSource) document.getElementById('preview-container').style.backgroundImage = `url(${certSource})`;
+        if(certSource) document.getElementById('preview-container').style.backgroundImage = `url("${certSource}")`;
         
         closeSettings();
     }
  
-    // Image Uploads (Kept as fallback to URLs)
+    // Image Uploads
     document.getElementById('cert-upload').addEventListener('change', e => {
         if (e.target.files[0]) {
             let r = new FileReader(); r.onload = evt => { 
                 config.certBase64 = evt.target.result; 
-                config.certUrl = ""; // Clear URL if uploading
+                config.certUrl = ""; 
                 document.getElementById('cert-url').value = "";
-                document.getElementById('preview-container').style.backgroundImage = `url(${config.certBase64})`; 
+                document.getElementById('preview-container').style.backgroundImage = `url("${config.certBase64}")`; 
             };
             r.readAsDataURL(e.target.files[0]);
         }
@@ -714,7 +708,7 @@
         if (e.target.files[0]) {
             let r = new FileReader(); r.onload = evt => { 
                 config.homeBgBase64 = evt.target.result; 
-                config.homeBgUrl = ""; // Clear URL if uploading
+                config.homeBgUrl = ""; 
                 document.getElementById('home-bg-url').value = "";
                 applyGlobalStyles(); 
             };
@@ -751,13 +745,21 @@
         }
     }
  
-    // JSON Import/Export
+    // JSON Import/Export - FIXED WITH BLOB TO PREVENT SIZE LIMIT CRASHES
     function exportJSON() {
-        scrapeBuilder(); // Ensure latest changes are caught
-        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config));
-        let node = document.createElement('a'); node.setAttribute("href", dataStr); node.setAttribute("download", "moon_mission_config.json");
-        document.body.appendChild(node); node.click(); node.remove();
+        scrapeBuilder();
+        let jsonStr = JSON.stringify(config);
+        let blob = new Blob([jsonStr], { type: "application/json" });
+        let url = URL.createObjectURL(blob);
+        let node = document.createElement('a');
+        node.href = url;
+        node.download = "moon_mission_config.json";
+        document.body.appendChild(node);
+        node.click();
+        node.remove();
+        URL.revokeObjectURL(url); // Clean up memory
     }
+
     function importJSON(e) {
         if (e.target.files[0]) {
             let r = new FileReader(); r.onload = evt => {
@@ -782,7 +784,7 @@
         let certName = document.getElementById('final-cert-name');
         
         let certSource = config.certUrl || config.certBase64;
-        if(certSource) certBg.style.backgroundImage = `url(${certSource})`;
+        if(certSource) certBg.style.backgroundImage = `url("${certSource}")`;
         
         navigateTo('page-certificate');
         let scaleFactor = Math.min(certBg.offsetWidth / 800, 1);
@@ -839,7 +841,8 @@
 
     async function autoLoadConfig() {
         try {
-            const response = await fetch('moon1.json');
+            const rawJsonUrl = "https://raw.githubusercontent.com/teachercristw/summercamp1/main/moon1.json";
+            const response = await fetch(rawJsonUrl);
             if (response.ok) {
                 const fetchedConfig = await response.json();
                 config = { ...config, ...fetchedConfig };
@@ -847,7 +850,7 @@
                 applyGlobalStyles();
             }
         } catch (error) {
-            console.warn("Could not auto-fetch moon1.json (normal if testing locally). Error:", error);
+            console.warn("Could not auto-fetch JSON from GitHub. Loading default config.", error);
         }
         applyGlobalStyles();
     }
