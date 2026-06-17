@@ -609,12 +609,25 @@
         renderBuilderList();
     }
  
+    // FIXED: The Scraper now rigorously checks the Visuals & Rules tabs!
     function scrapeBuilder() {
+        // 1. Rules Tab
         config.passingType = document.getElementById('passing-type').value;
         config.passingValue = parseInt(document.getElementById('passing-value').value);
+        
+        // 2. Visuals Tab
         config.homeBgUrl = document.getElementById('home-bg-url').value.trim();
         config.certUrl = document.getElementById('cert-url').value.trim();
+        config.fontFamily = document.getElementById('font-selector').value;
+        config.fontSize = document.getElementById('font-size-input').value;
+        config.fontColor = document.getElementById('font-color-input').value;
+
+        // Force position grab directly from the draggable element
+        let dragName = document.getElementById('draggable-name');
+        if (dragName.style.left) config.posX = parseFloat(dragName.style.left);
+        if (dragName.style.top) config.posY = parseFloat(dragName.style.top);
         
+        // 3. Builder Tab
         config.questions.forEach((q, i) => {
             q.text = document.getElementById(`bq-text-${i}`).value;
             q.points = parseInt(document.getElementById(`bq-pts-${i}`).value);
@@ -745,7 +758,7 @@
         }
     }
  
-    // JSON Import/Export - FIXED WITH BLOB TO PREVENT SIZE LIMIT CRASHES
+    // JSON Import/Export
     function exportJSON() {
         scrapeBuilder();
         let jsonStr = JSON.stringify(config);
@@ -757,7 +770,7 @@
         document.body.appendChild(node);
         node.click();
         node.remove();
-        URL.revokeObjectURL(url); // Clean up memory
+        URL.revokeObjectURL(url);
     }
 
     function importJSON(e) {
@@ -839,10 +852,13 @@
         });
     }
 
+    // FIXED: The cache-buster timestamp prevents GitHub from showing you an old file
     async function autoLoadConfig() {
         try {
-            const rawJsonUrl = "https://raw.githubusercontent.com/teachercristw/summercamp1/main/moon1.json";
+            const cacheBuster = new Date().getTime();
+            const rawJsonUrl = `https://raw.githubusercontent.com/teachercristw/summercamp1/main/moon1.json?nocache=${cacheBuster}`;
             const response = await fetch(rawJsonUrl);
+            
             if (response.ok) {
                 const fetchedConfig = await response.json();
                 config = { ...config, ...fetchedConfig };
