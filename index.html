@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mission to the Moon: Eco-Astronaut Academy</title>
+    <title>Mission to the Moon</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Quicksand:wght@700&family=Balsamiq+Sans:wght@700&family=Fredoka+One&family=Chewy&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -783,7 +783,7 @@
         let url = URL.createObjectURL(blob);
         let node = document.createElement('a');
         node.href = url;
-        node.download = "moon_mission_config.json";
+        node.download = "moon.json";
         document.body.appendChild(node);
         node.click();
         node.remove();
@@ -877,7 +877,7 @@
     async function autoLoadConfig() {
         try {
             const cacheBuster = new Date().getTime();
-            const rawJsonUrl = `https://raw.githubusercontent.com/teachercristw/summercamp1/main/moon1.json?nocache=${cacheBuster}`;
+            const rawJsonUrl = `https://raw.githubusercontent.com/teachercristw/summercamp1/main/moon.json?nocache=${cacheBuster}`;
             const response = await fetch(rawJsonUrl);
             
             if (response.ok) {
